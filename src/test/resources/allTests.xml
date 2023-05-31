@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="All tests" >
+
+
+    <test name="Tests smoke">
+
+        <classes>
+            <class name="perosntest.ManTests"/>
+
+            <class name="perosntest.WomanTests"/>
+
+
+        </classes>
+
+    </test>
+</suite>
