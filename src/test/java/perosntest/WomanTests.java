@@ -11,77 +11,60 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import javax.swing.plaf.metal.MetalBorders;
+
 public class WomanTests {
     SoftAssert softAssert = new SoftAssert();
     private Woman woman;
     private Man man;
 
-    @BeforeMethod(alwaysRun = true)
-    public void createWoman() {
-        woman = new Woman("Kate", "Dase", 25, null, "Btick", false, false);
+    @Test(dataProvider = "womanIsRetireData", dataProviderClass = TestDataProvider.class)
+    public void testisRetired(Woman woman, boolean expectedRetiredResult) {
+
+        Assert.assertEquals(woman.isRetired(), expectedRetiredResult, "Wrong retirement result");
+
     }
 
-
-    @BeforeMethod(alwaysRun = true)
-    public void createMan() {
-        man = new Man("Klark", "Huge", 35, null, null, false, false);
-    }
-
-
-    @Test(dataProvider = "women", dataProviderClass = TestDataProvider.class)
-    public void testisRetired(Woman woman) {
-
-        Assert.assertTrue(woman.isRetired(), "You are not of retirement age");
-    }
-
-    @Test(dataProvider = "couple", dataProviderClass = TestDataProvider.class)
-    public void testRegisterPartnership(Man man, Woman woman) {
+    @Test(dataProvider = "registerPartnershipWoman", dataProviderClass = TestDataProvider.class)
+    public void testRegisterPartnership(Woman woman, Man man, boolean expectedRegisteredResult) {
 
         woman.registerPartnership(man);
-        softAssert.assertTrue(woman.isPartnerChanged(), "Partnership was not registered");
-        softAssert.assertEquals(woman.getPartner().getFirstName(), man.getFirstName());
-        softAssert.assertNotEquals(woman.getLastName(), woman.getPreviousLastName());
-    }
-
-    @Test(dataProvider = "couple", dataProviderClass = TestDataProvider.class)
-    public void testDeregisterPartnership(Man man, Woman woman) {
-        woman.deregisterPartnership(false);
-        softAssert.assertFalse(woman.isRegisterPartnership());
-        softAssert.assertEquals(woman.getPreviousLastName(), "Mjk");
-        softAssert.assertAll();
-    }
-
-    @Test(dataProvider = "women", dataProviderClass = TestDataProvider.class, groups = {"ParametersTests"})
-    public void testWomanLastName(Woman woman) {
-        softAssert.assertEquals(woman.getLastName(), "KLart", "Lastname is not correct");
-        softAssert.assertEquals(woman.getLastName(), "Lol", "Lastname is not correct");
-    }
-
-    @Test(dataProvider = "women", dataProviderClass = TestDataProvider.class, groups = {"ParametersTests"})
-    public void testWomanFirstName(Woman woman) {
-        softAssert.assertEquals(woman.getFirstName(), "Olga", "Firstname is not correct");
-        softAssert.assertEquals(woman.getFirstName(), "Dina", "Firstname is not correct");
-    }
-
-    @Test(dataProvider = "women", dataProviderClass = TestDataProvider.class, groups = {"ParametersTests"})
-    public void testWomanAge(Woman woman) {
-        Assert.assertEquals(woman.getAge(), 25, "Age is not correct");
+        Assert.assertEquals(woman.isRegisterPartnership(), expectedRegisteredResult, "Partnership was not registered");
 
     }
 
-    @Test(dataProvider = "women", dataProviderClass = TestDataProvider.class, groups = {"ParametersTests"})
-    public void testWomanHasNoPartner(Woman woman) {
-        woman = new Woman(false);
+    @Test(dataProvider = "deRegisterPartnershipWoman", dataProviderClass = TestDataProvider.class)
+    public void testDeregisterPartnership(Man man, Woman woman, boolean expectedDeRegisteredResult) {
+        woman.deregisterPartnership(woman.isRegisterPartnership());
+        Assert.assertEquals(woman.isRegisterPartnership(), expectedDeRegisteredResult);
 
-        Assert.assertEquals(woman.getPartner(), null);
     }
 
-    @Test(dataProvider = "women", dataProviderClass = TestDataProvider.class, groups = {"ParametersTests"})
-    public void testWomanHasPartner(Woman woman) {
+    @Test(dataProvider = "WomanLastName", dataProviderClass = TestDataProvider.class, groups = {"ParametersTests"})
+    public void testWomanLastName(Woman woman, String expectedLastName) {
+        Assert.assertEquals(woman.getLastName(), expectedLastName, "Lastname is not correct");
+    }
+
+    @Test(dataProvider = "WomanFirstName", dataProviderClass = TestDataProvider.class, groups = {"ParametersTests"})
+    public void testWomanFirstName(Woman woman, String expectedFirstName) {
+        Assert.assertEquals(woman.getFirstName(), expectedFirstName, "Firstname is not correct");
+    }
+
+    @Test(dataProvider = "WomanAge", dataProviderClass = TestDataProvider.class, groups = {"ParametersTests"})
+    public void testWomanAge(Woman woman, int expectedAge) {
+        Assert.assertEquals(woman.getAge(), expectedAge, "Age is not correct");
+    }
+
+    @Test(dataProvider = "WomanHasNoPartner", dataProviderClass = TestDataProvider.class, groups = {"ParametersTests"})
+    public void testWomanHasNoPartner(Woman woman, Person expectedResult) {
+        Assert.assertEquals(woman.getPartner(), expectedResult);
+
+    }
+
+    @Test(dataProvider = "WomanHasPartner", dataProviderClass = TestDataProvider.class, groups = {"ParametersTests"})
+    public void testWomanHasPartner(Woman woman, Man man, Person expectedResult) {
         woman.registerPartnership(man);
-        Assert.assertEquals(woman.getPartner().getFirstName(), man.getFirstName());
+        Assert.assertEquals(woman.getPartner(), expectedResult);
     }
-
-
 
 }

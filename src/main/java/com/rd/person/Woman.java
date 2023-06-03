@@ -27,7 +27,8 @@ public class Woman extends Person{
         if (Woman.super.isRegisterPartnership == true){
 
             System.out.println("You are married");
-        } else if (partner instanceof Man){
+        }
+        else if (partner instanceof Man){
             setPartner(partner);
             setPreviousLastName(getLastName());
             setLastName(partner.getLastName());
@@ -47,6 +48,7 @@ public class Woman extends Person{
 
                 setLastName(getPreviousLastName());
                 setPartner(null);
+                setRegisterPartnership(false);
 
 
 
