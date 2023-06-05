@@ -1,0 +1,29 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Getter/Setters tests" >
+
+
+    <!--    //run group -->
+        <groups>
+            <run>
+                            <include name="ParametersTests"/>
+            </run>
+        </groups>
+
+    <test name="Man Parameters  smoke">
+
+        <classes>
+            <class name="perosntest.ManTests"/>
+
+        </classes>
+
+    </test>
+
+
+    <test name="Woman Parameters  smoke">
+        <classes>
+            <class name="perosntest.WomanTests"/>
+        </classes>
+
+
+    </test>
+</suite>
